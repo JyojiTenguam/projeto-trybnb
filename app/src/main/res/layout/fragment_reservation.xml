@@ -4,4 +4,8 @@
         android:id="@+id/reservation_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reservation_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
