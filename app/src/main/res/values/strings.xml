@@ -4,4 +4,6 @@
     <string name="login_hint">Login</string>
     <string name="password_hint">Password</string>
     <string name="login_button_text">Login</string>
+    <string name="login_required_error">O campo Login é obrigatório</string>
+    <string name="password_required_error">O campo Password é obrigatório</string>
 </resources>

@@ -31,6 +31,7 @@
             android:layout_marginBottom="20dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="login_hint"
@@ -45,6 +46,7 @@
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="password_hint"
@@ -55,6 +57,6 @@
             android:id="@+id/login_button_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="login_button_text" />
+            android:text="login" />
     </LinearLayout>
 </ScrollView>
