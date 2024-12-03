@@ -1,11 +1,12 @@
 package com.betrybe.trybnb.ui.views.activities
 
+
+import ProfileFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.betrybe.trybnb.R
 import com.betrybe.trybnb.ui.views.fragments.CreateReservationFragment
-import com.betrybe.trybnb.ui.views.fragments.ProfileFragment
 import com.betrybe.trybnb.ui.views.fragments.ReservationFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+        replaceFragment(ProfileFragment())
     }
 
     private fun replaceFragment(fragment: Fragment) {

@@ -1,13 +1,19 @@
-package com.betrybe.trybnb.ui.views.fragments
-
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.betrybe.trybnb.R
+import com.betrybe.trybnb.common.ApiIdlingResource
+import com.betrybe.trybnb.data.api.RetrofitInstance
+import com.betrybe.trybnb.data.models.LoginRequest
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.*
+
+import com.google.android.material.snackbar.Snackbar
 
 class ProfileFragment : Fragment() {
 
@@ -48,8 +54,39 @@ class ProfileFragment : Fragment() {
             }
 
             if (isValid) {
-                // Exemplo: Redirecionar ou exibir mensagem de sucesso
+                login(loginText, passwordText, view)
+            } else {
+                showSnackbar(view, "Preencha todos os campos.")
             }
+        }
+    }
+
+    private fun login(username: String, password: String, view: View) {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                ApiIdlingResource.increment()
+
+                val loginRequest = LoginRequest(username, password) // Criando o objeto com as credenciais
+                val response = RetrofitInstance.create().doLoginRequest(loginRequest)
+
+                ApiIdlingResource.decrement()
+
+                if (response.isSuccessful) {
+                    showSnackbar(view, "Login feito com sucesso!")
+                } else {
+                    showSnackbar(view, "Erro ao autenticar. Tente novamente.")
+                }
+
+            } catch (e: Exception) {
+                ApiIdlingResource.decrement()
+                showSnackbar(view, "Erro ao autenticar. Tente novamente.")
+            }
+        }
+    }
+
+    private fun showSnackbar(view: View, message: String) {
+        if (isAdded && context != null) {
+            Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show()
         }
     }
 }

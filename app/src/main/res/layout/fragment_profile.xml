@@ -34,7 +34,7 @@
                 android:id="@+id/login_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="login_hint"
+                android:hint="Login"
                 android:drawableStart="@drawable/ic_login" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,7 +49,7 @@
                 android:id="@+id/password_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="password_hint"
+                android:hint="Password"
                 android:drawableStart="@drawable/ic_password" />
         </com.google.android.material.textfield.TextInputLayout>
 
