@@ -48,6 +48,7 @@ class CreateReservationFragment : Fragment() {
         )
 
         binding.createReservationButton.setOnClickListener {
+            validateFields(fields)
             if (areFieldsValid(fields)) {
                 createBooking(fields)
             }
@@ -59,6 +60,17 @@ class CreateReservationFragment : Fragment() {
         _binding = null
     }
 
+    private fun validateFields(fields: ReservationFields) {
+        fields.apply {
+            validateTextInputLayout(firstNameInput, "O campo Nome é obrigatório")
+            validateTextInputLayout(lastNameInput, "O campo Sobrenome é obrigatório")
+            validateTextInputLayout(checkinInput, "O campo Checkin é obrigatório")
+            validateTextInputLayout(checkoutInput, "O campo Checkout é obrigatório")
+            validateTextInputLayout(additionalNeedsInput, "O campo Necessidades Adicionais é obrigatório")
+            validateTextInputLayout(totalPriceInput, "O campo Preço Total é obrigatório")
+        }
+    }
+
     private fun areFieldsValid(fields: ReservationFields): Boolean {
         return fields.run {
             firstNameInput.editText?.text?.isNotBlank() == true &&
@@ -68,6 +80,11 @@ class CreateReservationFragment : Fragment() {
                     additionalNeedsInput.editText?.text?.isNotBlank() == true &&
                     totalPriceInput.editText?.text?.isNotBlank() == true
         }
+    }
+
+    private fun validateTextInputLayout(inputLayout: TextInputLayout, errorMessage: String) {
+        val text = inputLayout.editText?.text.toString().trim()
+        inputLayout.error = if (text.isEmpty()) errorMessage else null
     }
 
     private fun createBooking(fields: ReservationFields) {
