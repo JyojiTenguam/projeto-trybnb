@@ -23,4 +23,9 @@ interface Api {
         @Path("Id") bookingId: String,
         @Header("Accept") accept: String = "application/json"
     ): ReservationItem
+
+    @POST("booking")
+    suspend fun createReservation(
+        @Body reservationItem: ReservationItem
+    ): Response<Any>
 }
