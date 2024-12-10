@@ -1,6 +1,7 @@
 package com.betrybe.trybnb.ui.views.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,16 +88,23 @@ class CreateReservationFragment : Fragment() {
         inputLayout.error = if (text.isEmpty()) errorMessage else null
     }
 
+
     private fun createBooking(fields: ReservationFields) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 ApiIdlingResource.increment()
                 val api = RetrofitInstance.create()
+
                 val bookingDates = BookingDates(
                     fields.checkinInput.editText?.text.toString().trim(),
                     fields.checkoutInput.editText?.text.toString().trim()
                 )
-                val isDepositPaid = binding.root.findViewById<CheckBox>(R.id.depositpaid_create_reservation).isChecked
+
+                val depositPaidCheckBox = binding.root.findViewById<CheckBox>(
+                    R.id.depositpaid_create_reservation
+                )
+                val isDepositPaid = depositPaidCheckBox.isChecked
+
                 val reservationItem = ReservationItem(
                     fields.firstNameInput.editText?.text.toString().trim(),
                     fields.lastNameInput.editText?.text.toString().trim(),
@@ -107,7 +115,25 @@ class CreateReservationFragment : Fragment() {
                 )
 
                 val response = api.createReservation(reservationItem)
-                showToast(response.isSuccessful)
+                print(response)
+
+                val confirmationMessage = requireView().findViewById<MaterialTextView>(
+                    R.id.confirmation_message
+                )
+
+                val message = if (response.isSuccessful) {
+                    getString(R.string.reserva_feita_com_sucesso)
+                } else {
+                    getString(R.string.error_message)
+                }
+
+                activity?.runOnUiThread {
+                    confirmationMessage?.apply {
+                        text = context.getString(R.string.reserva_feita_com_sucesso)
+                        visibility = View.VISIBLE
+                    }
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                }
 
                 ApiIdlingResource.decrement()
             } catch (e: HttpException) {
@@ -134,13 +160,7 @@ class CreateReservationFragment : Fragment() {
         val confirmationMessage = requireView().findViewById<MaterialTextView>(R.id.confirmation_message)
         confirmationMessage.text = message
         confirmationMessage.visibility = View.VISIBLE
-    }
-
-    private fun showToast(isSuccessful: Boolean) {
-        val messageResId = if (isSuccessful) R.string.reserva_feita_com_sucesso else R.string.error_message
-        activity?.runOnUiThread {
-            Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
-        }
+        Log.d("error message", "Displayed error message: $message")
     }
 }
 
